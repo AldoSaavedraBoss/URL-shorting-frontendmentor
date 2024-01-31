@@ -1,0 +1,48 @@
+---
+import Logo from "./Logo.astro";
+---
+
+<header
+    class="py-4 bg-white flex items-center w-full px-10 justify-between z-40"
+>
+    <div class="flex flex-grow basis-0 gap-8">
+        <a href="#" class="py-2"><Logo color="#34313D" /></a>
+        <nav class="flex justify-start">
+            <ul class="flex">
+                <a href="#">
+                    <li
+                        class="px-4 py-2 text-my-gray hover:text-my-very-dark-violet"
+                    >
+                        Features
+                    </li>
+                </a>
+                <a href="#">
+                    <li
+                        class="px-4 py-2 text-my-gray hover:text-my-very-dark-violet"
+                    >
+                        Pricing
+                    </li>
+                </a>
+                <a href="#">
+                    <li
+                        class="px-4 py-2 text-my-gray hover:text-my-very-dark-violet"
+                    >
+                        Resources
+                    </li>
+                </a>
+            </ul>
+        </nav>
+    </div>
+    <ul class="flex flex-grow basis-0 justify-end">
+        <a href="#">
+            <li class="py-2 px-4 text-my-gray hover:text-my-very-dark-violet">
+                Login
+            </li>
+        </a>
+        <a href="#">
+            <li class="py-2 px-4 text-white bg-my-cyan hover:bg-my-cyan-white rounded-full">
+                Sign up
+            </li>
+        </a>
+    </ul>
+</header>
