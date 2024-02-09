@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import ShortedLinks from "../components/ShotedLinks.astro";
 import Cards from "../components/Cards.astro";
 import Logo from "../components/Logo.astro";
+const key = import.meta.env.URLBAE_LINK;
 //import {Image} from 'astro:assets'
 ---
 
@@ -35,11 +36,13 @@ import Logo from "../components/Logo.astro";
 					class="form-container bg-my-dark-violet p-8 flex w-full h-auto gap-3 justify-center mx-auto rounded-md"
 				>
 					<input
+					id="shortening_btn"
 						type="text"
 						placeholder="Shorten a link here..."
 						class="flex-grow-[8] h-10 pl-4 rounded-md"
 					/>
-					<button class="flex-grow bg-my-cyan rounded-md text-white"
+					<button
+						class="flex-grow bg-my-cyan hover:bg-my-cyan-white rounded-md text-white"
 						>Shorten It!</button
 					>
 				</form>
@@ -69,7 +72,7 @@ import Logo from "../components/Logo.astro";
 			>
 		</div>
 	</div>
-	<footer class="flex bg-my-very-dark-blue pt-10 text-white">
+	<footer class="flex bg-my-very-dark-blue py-10 text-white">
 		<div class="flex-grow basis-0">
 			<div class="mx-auto w-fit">
 				<Logo color="#fff" />
@@ -79,49 +82,229 @@ import Logo from "../components/Logo.astro";
 			<div>
 				<h6 class="mb-8 text-sm">Features</h6>
 				<div class="flex flex-col gap-2">
-				<a href="#" class="text-my-gray hover:text-my-cyan text-xs">Link Shortening</a>
-				<a href="#" class="text-my-gray hover:text-my-cyan text-xs">Branded Links</a>
-				<a href="#" class="text-my-gray hover:text-my-cyan text-xs">Analytics</a>
+					<a href="#" class="text-my-gray hover:text-my-cyan text-xs"
+						>Link Shortening</a
+					>
+					<a href="#" class="text-my-gray hover:text-my-cyan text-xs"
+						>Branded Links</a
+					>
+					<a href="#" class="text-my-gray hover:text-my-cyan text-xs"
+						>Analytics</a
+					>
 				</div>
 			</div>
 			<div>
 				<h6 class="mb-8 text-sm">Resources</h6>
 				<div class="flex flex-col gap-2">
-					<a href="#" class="text-my-gray hover:text-my-cyan text-xs">Blog</a>
-				<a href="#" class="text-my-gray hover:text-my-cyan text-xs">Developers</a>
-				<a href="#" class="text-my-gray hover:text-my-cyan text-xs">Support</a>
+					<a href="#" class="text-my-gray hover:text-my-cyan text-xs"
+						>Blog</a
+					>
+					<a href="#" class="text-my-gray hover:text-my-cyan text-xs"
+						>Developers</a
+					>
+					<a href="#" class="text-my-gray hover:text-my-cyan text-xs"
+						>Support</a
+					>
 				</div>
 			</div>
 			<div>
-				<h6  class="mb-8 text-sm">Company</h6>
+				<h6 class="mb-8 text-sm">Company</h6>
 				<div class="flex flex-col gap-2">
-					<a href="#" class="text-my-gray hover:text-my-cyan text-xs">About</a>
-				<a href="#" class="text-my-gray hover:text-my-cyan text-xs">Our Team</a>
-				<a href="#" class="text-my-gray hover:text-my-cyan text-xs">Careers</a>
-				<a href="#" class="text-my-gray hover:text-my-cyan text-xs">Contact</a>
+					<a href="#" class="text-my-gray hover:text-my-cyan text-xs"
+						>About</a
+					>
+					<a href="#" class="text-my-gray hover:text-my-cyan text-xs"
+						>Our Team</a
+					>
+					<a href="#" class="text-my-gray hover:text-my-cyan text-xs"
+						>Careers</a
+					>
+					<a href="#" class="text-my-gray hover:text-my-cyan text-xs"
+						>Contact</a
+					>
 				</div>
 			</div>
 		</div>
 		<div class="flex flex-grow basis-0 gap-5">
-			<img class="w-7 h-7" src="/images/icon-facebook.svg" alt="Facebook" />
-			<img class="w-7 h-7" src="/images/icon-twitter.svg" alt="Twitter" />
-			<img class="w-7 h-7" src="/images/icon-pinterest.svg" alt="Pinterest" />
-			<img class="w-7 h-7" src="/images/icon-instagram.svg" alt="Instagram" />
+			<a href="#"
+				><img
+					class="w-7 h-7 fill-my-cyan"
+					src="/images/icon-facebook.svg"
+					alt="Facebook"
+				/></a
+			>
+			<a href="#"
+				><img
+					class="w-7 h-7 hover:bg-my-cyan"
+					src="/images/icon-twitter.svg"
+					alt="Twitter"
+				/></a
+			>
+			<a href="#"
+				><img
+					class="w-7 h-7 hover:bg-my-cyan"
+					src="/images/icon-pinterest.svg"
+					alt="Pinterest"
+				/></a
+			>
+			<a href="#"
+				><img
+					class="w-7 h-7 hover:bg-my-cyan"
+					src="/images/icon-instagram.svg"
+					alt="Instagram"
+				/></a
+			>
 		</div>
 	</footer>
 </Layout>
 
-<style>
+<style >
 	.form-container,
 	.prefooter {
 		background-image: url("/images/bg-boost-desktop.svg");
 		background-repeat: no-repeat;
 		background-position: 75% 84%;
-		
 	}
 
 	.form-container {
 		background-size: 150%;
 	}
-
 </style>
+<script>
+	import { URL_REGEX } from "../const";
+	const code = (await import.meta.env.PUBLIC_URLBAE_LINK) as string;
+	const base_url = (await import.meta.env.PUBLIC_URL) as string;
+
+	const $form = document.querySelector('form') as HTMLFormElement
+	const $input = document.querySelector("#shortening_btn") as HTMLInputElement;
+	const $div_links = document.querySelector("#shorted_links") as HTMLDivElement
+	let promiseArray: any = [];
+
+	$form.addEventListener('submit', shortLink)
+
+	async function shortLink(e: Event) {
+		const regex = new RegExp(URL_REGEX);
+
+		e.preventDefault();
+		if ($input.value.trim() === "" || !regex.test($input.value)) return;
+		console.log($input.value.trim())
+		const options = {
+			method: "POST",
+			headers: {
+				"Accept": '*/*',
+				"Authorization": `Bearer ${code}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				url: $input.value.trim(),
+				domain: "tinyurl.com",
+				alias: '',
+				description: ''
+			}),
+		};
+
+		const url = new URL(`${base_url}/create`);
+
+		const res = await fetch(url, options);
+		const data = await res.json()
+		console.log(data)
+		getLinks();
+	}
+
+
+
+	function getLinks() {
+		const options = {
+			headers: {
+				Accept: "application/json",
+				Authorization: `Bearer ${code}`,
+				"Content-Type": "application/json",
+			},
+		};
+
+		const url = new URL(`${base_url}/urls/available`);
+
+		fetch(url, options)
+			.then((pr) => pr.json())
+			.then((data) => {
+				if (data.code !== 0) throw new Error("Error to get links list");
+				promiseArray = data.data.map((obj: any) => {
+					return new Promise((resolve, reject) => {
+						setTimeout(() => {
+							fetch(
+								`${base_url}/alias/${obj.domain}/${obj.alias}`,
+								options,
+							)
+								.then((response) => {
+									if (!response.ok) {
+										throw new Error(
+											`Error en la solicitud`,
+										);
+									}
+									return response.json();
+								})
+								.then((data) => {
+									// Resuelve la promesa con el resultado del fetch
+									resolve(data);
+								})
+								.catch((error) => {
+									// Rechaza la promesa si hay algún error en el fetch
+									reject(error);
+								});
+						}, 1000);
+					});
+				});
+				Promise.all(promiseArray)
+					.then((result) => printLinks(result))
+					.catch((e) => console.error(e));
+			})
+			.catch((e) => console.error(e));
+	}
+
+	function printLinks(links: any) {
+		const $ul = document.createElement("ul");
+		$ul.classList.add("flex","flex-col", "gap-4");
+		$ul.innerHTML = ''
+		console.log('links', links)
+		links.map((link: any, i: number) => {
+			$ul.innerHTML += `
+			<li
+            class="flex items-center bg-white justify-between py-2 px-4 rounded"
+        >
+            <div class="max-w-[300px]">
+				<p class="whitespace-nowrap overflow-hidden overflow-ellipsis">${link.data.url}</p></div>
+            <div class="flex items-center gap-4">
+                
+				<input class="text-my-cyan w-[310px] whitespace-nowrap overflow-hidden overflow-ellipsis" type="text" readonly disabled value="${link.data.tiny_url}" id="text_${i}"/>
+                <button
+                    class="copy bg-my-cyan text-white w-20 text-center py-1.5 rounded-md hover:bg-my-cyan-white"
+					data-for="text_${i}"
+                    >Copy</button
+                >
+            </div>
+        </li>
+		`;
+		});
+		$div_links.innerHTML = ''
+		$div_links?.appendChild($ul)
+	}
+
+	document.addEventListener('click', (e: any) => {
+		const element = e.target
+		if(!Array.from(element.classList).includes('copy')) return
+		element.classList.replace('bg-my-cyan', 'bg-my-very-dark-violet')
+		element.classList.remove('hover:bg-my-cyan-white')
+		const copy_text: HTMLInputElement | null = document.querySelector(`#${element.dataset.for}`)
+		copy_text?.select()
+		copy_text?.setSelectionRange(0, Infinity)
+		navigator.clipboard.writeText(copy_text?.value ?? '')
+		element.innerHTML = 'Copied!'
+		setTimeout(() => {
+			element.classList.replace('bg-my-very-dark-violet', 'bg-my-cyan')
+			element.classList.add('hover:bg-my-cyan-white')
+			element.innerHTML = 'Copy'
+		}, 1000)
+	})
+
+	getLinks();
+</script>
