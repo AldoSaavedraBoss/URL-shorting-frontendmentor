@@ -34,8 +34,8 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://github.com/AldoSaavedraBoss/URL-shorting-frontendmentor)
-- Live Site URL: [Add live site URL here](https://github.com/AldoSaavedraBoss/URL-shorting-frontendmentor)
+- [Solution UR](https://github.com/AldoSaavedraBoss/URL-shorting-frontendmentor)
+- [Live Site URL](https://github.com/AldoSaavedraBoss/URL-shorting-frontendmentor)
 
 
 ### Built with
